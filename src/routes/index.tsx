@@ -193,7 +193,7 @@ function TopBar() {
 function PageHeader() {
   return (
     <div>
-      <h1 className="text-2xl font-bold">지도뷰</h1>
+      <h1 className="text-2xl font-bold">{isAdmin ? "지도뷰" : "내 주변 대여소"}</h1>
       <p className="text-sm text-muted-foreground mt-1">
         서울시 공공자전거 실시간 현황을 확인하세요
       </p>
