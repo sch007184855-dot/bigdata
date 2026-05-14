@@ -17,10 +17,10 @@ const items = [
     iconColor: "text-primary",
   },
   {
-    to: null,
+    to: "/stations" as const,
     icon: Bike,
-    title: "대여소 관리",
-    desc: "대여소 등록/수정 및 운영 상태 관리",
+    title: "대여소 현황",
+    desc: "서울시 자치구별 대여소 현황 조회",
     iconBg: "bg-success-soft",
     iconColor: "text-[oklch(0.55_0.15_155)]",
   },

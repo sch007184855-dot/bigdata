@@ -316,7 +316,7 @@ function Sidebar() {
           {isAdmin && (
             <>
               <NavItem to="/dashboard" icon={<BarChart3 className="size-4" />} label="대시보드" active />
-              <NavItem icon={<Bike className="size-4" />} label="대여소 관리" />
+              <NavItem to="/stations" icon={<Bike className="size-4" />} label="대여소 현황" />
             </>
           )}
           <NavItem icon={<MessageSquare className="size-4" />} label="Q&A 게시판" />
