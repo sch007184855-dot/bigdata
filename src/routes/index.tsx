@@ -90,6 +90,7 @@ function Sidebar() {
         <ul className="space-y-1">
           {isAdmin ? (
             <>
+              <NavItem to="/" icon={<MapIcon className="size-4" />} label="지도뷰" />
               <NavItem to="/dashboard" icon={<BarChart3 className="size-4" />} label="대시보드" />
               <NavItem icon={<Bike className="size-4" />} label="대여소 관리" />
             </>
