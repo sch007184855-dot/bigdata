@@ -50,6 +50,7 @@ const stations: { id: number; x: number; y: number; count: number; status: Stati
 const eventDays = [15, 20, 25, 28];
 
 function Index() {
+  const { isAdmin } = useAuth();
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
 
   return (
@@ -59,9 +60,9 @@ function Index() {
         <TopBar />
         <div className="flex-1 px-8 py-6 space-y-6 overflow-x-hidden">
           <PageHeader />
-          <StatsGrid />
+          {isAdmin && <StatsGrid />}
           <MapPanel />
-          <QuickActions />
+          {isAdmin && <QuickActions />}
           <EventCalendar selectedDay={selectedDay} onSelect={setSelectedDay} />
         </div>
       </main>
@@ -87,11 +88,18 @@ function Sidebar() {
       <nav className="px-3 mt-2 flex-1">
         <div className="px-2 text-xs text-muted-foreground mb-2">메인 메뉴</div>
         <ul className="space-y-1">
-          <NavItem to="/" icon={<MapIcon className="size-4" />} label={isAdmin ? "지도뷰" : "내 주변 대여소"} active />
-          {isAdmin && (
+          {isAdmin ? (
             <>
               <NavItem to="/dashboard" icon={<BarChart3 className="size-4" />} label="대시보드" />
               <NavItem icon={<Bike className="size-4" />} label="대여소 관리" />
+            </>
+          ) : (
+            <>
+              <NavItem to="/" icon={<MapIcon className="size-4" />} label="내 주변 대여소" active />
+              <NavItem icon={<MapPinned className="size-4" />} label="대여소 지도 전체보기" />
+              <NavItem icon={<MessageSquare className="size-4" />} label="챗봇" />
+              <NavItem icon={<History className="size-4" />} label="이용내역" />
+              <NavItem icon={<Search className="size-4" />} label="대여소 찾기" />
             </>
           )}
           <NavItem icon={<MessageSquare className="size-4" />} label="Q&A 게시판" />
