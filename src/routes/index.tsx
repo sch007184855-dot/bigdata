@@ -50,6 +50,7 @@ const stations: { id: number; x: number; y: number; count: number; status: Stati
 const eventDays = [15, 20, 25, 28];
 
 function Index() {
+  const { isAdmin } = useAuth();
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
 
   return (
@@ -59,9 +60,9 @@ function Index() {
         <TopBar />
         <div className="flex-1 px-8 py-6 space-y-6 overflow-x-hidden">
           <PageHeader />
-          <StatsGrid />
+          {isAdmin && <StatsGrid />}
           <MapPanel />
-          <QuickActions />
+          {isAdmin && <QuickActions />}
           <EventCalendar selectedDay={selectedDay} onSelect={setSelectedDay} />
         </div>
       </main>
