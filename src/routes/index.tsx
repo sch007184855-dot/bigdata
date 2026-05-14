@@ -87,10 +87,10 @@ function Sidebar() {
       <nav className="px-3 mt-2 flex-1">
         <div className="px-2 text-xs text-muted-foreground mb-2">메인 메뉴</div>
         <ul className="space-y-1">
-          <NavItem icon={<MapIcon className="size-4" />} label="지도뷰" active />
+          <NavItem to="/" icon={<MapIcon className="size-4" />} label="지도뷰" active />
           {isAdmin && (
             <>
-              <NavItem icon={<BarChart3 className="size-4" />} label="대시보드" />
+              <NavItem to="/dashboard" icon={<BarChart3 className="size-4" />} label="대시보드" />
               <NavItem icon={<Bike className="size-4" />} label="대여소 관리" />
             </>
           )}
