@@ -87,7 +87,7 @@ function Sidebar() {
       <nav className="px-3 mt-2 flex-1">
         <div className="px-2 text-xs text-muted-foreground mb-2">메인 메뉴</div>
         <ul className="space-y-1">
-          <NavItem to="/" icon={<MapIcon className="size-4" />} label="지도뷰" active />
+          <NavItem to="/" icon={<MapIcon className="size-4" />} label={isAdmin ? "지도뷰" : "내 주변 대여소"} active />
           {isAdmin && (
             <>
               <NavItem to="/dashboard" icon={<BarChart3 className="size-4" />} label="대시보드" />
@@ -191,9 +191,10 @@ function TopBar() {
 }
 
 function PageHeader() {
+  const { isAdmin } = useAuth();
   return (
     <div>
-      <h1 className="text-2xl font-bold">지도뷰</h1>
+      <h1 className="text-2xl font-bold">{isAdmin ? "지도뷰" : "내 주변 대여소"}</h1>
       <p className="text-sm text-muted-foreground mt-1">
         서울시 공공자전거 실시간 현황을 확인하세요
       </p>
