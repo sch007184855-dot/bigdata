@@ -137,23 +137,31 @@ function NavItem({
   icon,
   label,
   active,
+  to,
 }: {
   icon: React.ReactNode;
   label: string;
   active?: boolean;
+  to?: string;
 }) {
+  const cls = `w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
+    active
+      ? "bg-primary text-primary-foreground font-medium shadow-sm"
+      : "text-foreground/80 hover:bg-muted"
+  }`;
   return (
     <li>
-      <button
-        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
-          active
-            ? "bg-primary text-primary-foreground font-medium shadow-sm"
-            : "text-foreground/80 hover:bg-muted"
-        }`}
-      >
-        {icon}
-        <span>{label}</span>
-      </button>
+      {to ? (
+        <Link to={to} className={cls}>
+          {icon}
+          <span>{label}</span>
+        </Link>
+      ) : (
+        <button className={cls}>
+          {icon}
+          <span>{label}</span>
+        </button>
+      )}
     </li>
   );
 }
