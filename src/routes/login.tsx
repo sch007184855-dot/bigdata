@@ -15,14 +15,14 @@ function LoginPage() {
   const [error, setError] = useState("");
 
   if (isAdmin) {
-    navigate({ to: "/" });
+    navigate({ to: "/menu" });
   }
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
     const res = login(id, pw);
     if (res.ok) {
-      navigate({ to: "/" });
+      navigate({ to: "/menu" });
     } else {
       setError(res.error);
     }

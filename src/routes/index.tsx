@@ -1,5 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth";
 import {
   Bike,
@@ -51,7 +51,14 @@ const eventDays = [15, 20, 25, 28];
 
 function Index() {
   const { isAdmin } = useAuth();
+  const navigate = useNavigate();
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (isAdmin) navigate({ to: "/menu" });
+  }, [isAdmin, navigate]);
+
+  if (isAdmin) return null;
 
   return (
     <div className="flex min-h-screen bg-background text-foreground">
@@ -60,9 +67,7 @@ function Index() {
         <TopBar />
         <div className="flex-1 px-8 py-6 space-y-6 overflow-x-hidden">
           <PageHeader />
-          {isAdmin && <StatsGrid />}
           <MapPanel />
-          {isAdmin && <QuickActions />}
           <EventCalendar selectedDay={selectedDay} onSelect={setSelectedDay} />
         </div>
       </main>
@@ -90,7 +95,6 @@ function Sidebar() {
         <ul className="space-y-1">
           {isAdmin ? (
             <>
-              <NavItem to="/" icon={<MapIcon className="size-4" />} label="지도뷰" />
               <NavItem to="/dashboard" icon={<BarChart3 className="size-4" />} label="대시보드" />
               <NavItem icon={<Bike className="size-4" />} label="대여소 관리" />
             </>
