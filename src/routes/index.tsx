@@ -87,10 +87,10 @@ function Sidebar() {
       <nav className="px-3 mt-2 flex-1">
         <div className="px-2 text-xs text-muted-foreground mb-2">메인 메뉴</div>
         <ul className="space-y-1">
-          <NavItem icon={<MapIcon className="size-4" />} label="지도뷰" active />
+          <NavItem to="/" icon={<MapIcon className="size-4" />} label="지도뷰" active />
           {isAdmin && (
             <>
-              <NavItem icon={<BarChart3 className="size-4" />} label="대시보드" />
+              <NavItem to="/dashboard" icon={<BarChart3 className="size-4" />} label="대시보드" />
               <NavItem icon={<Bike className="size-4" />} label="대여소 관리" />
             </>
           )}
@@ -137,23 +137,31 @@ function NavItem({
   icon,
   label,
   active,
+  to,
 }: {
   icon: React.ReactNode;
   label: string;
   active?: boolean;
+  to?: string;
 }) {
+  const cls = `w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
+    active
+      ? "bg-primary text-primary-foreground font-medium shadow-sm"
+      : "text-foreground/80 hover:bg-muted"
+  }`;
   return (
     <li>
-      <button
-        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
-          active
-            ? "bg-primary text-primary-foreground font-medium shadow-sm"
-            : "text-foreground/80 hover:bg-muted"
-        }`}
-      >
-        {icon}
-        <span>{label}</span>
-      </button>
+      {to ? (
+        <Link to={to} className={cls}>
+          {icon}
+          <span>{label}</span>
+        </Link>
+      ) : (
+        <button className={cls}>
+          {icon}
+          <span>{label}</span>
+        </button>
+      )}
     </li>
   );
 }
