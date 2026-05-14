@@ -96,7 +96,7 @@ function Sidebar() {
           {isAdmin ? (
             <>
               <NavItem to="/dashboard" icon={<BarChart3 className="size-4" />} label="대시보드" />
-              <NavItem icon={<Bike className="size-4" />} label="대여소 관리" />
+              <NavItem to="/stations" icon={<Bike className="size-4" />} label="대여소 현황" />
             </>
           ) : (
             <>
