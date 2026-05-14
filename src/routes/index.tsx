@@ -191,6 +191,7 @@ function TopBar() {
 }
 
 function PageHeader() {
+  const { isAdmin } = useAuth();
   return (
     <div>
       <h1 className="text-2xl font-bold">{isAdmin ? "지도뷰" : "내 주변 대여소"}</h1>
