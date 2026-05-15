@@ -1,16 +1,11 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth";
+import AppSidebar from "@/components/AppSidebar";
 import {
   Bike,
-  BarChart3,
   MapPinned,
   MessageSquare,
-  Bell,
-  HelpCircle,
-  Settings,
-  LogOut,
-  Map as MapIcon,
   Search,
   Calendar as CalendarIcon,
   Download,
