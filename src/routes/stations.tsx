@@ -200,6 +200,7 @@ function StationsPage() {
 
         {selectedStation && station && <StationDetail station={station} />}
       </main>
+      </div>
     </div>
   );
 }
