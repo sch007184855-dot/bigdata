@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@/lib/auth";
+import AppSidebar from "@/components/AppSidebar";
 import {
   Bike,
   ChevronLeft,
@@ -141,8 +142,10 @@ function StationsPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <header className="h-16 px-6 sm:px-8 border-b border-border bg-card flex items-center gap-4">
+    <div className="flex min-h-screen bg-background text-foreground">
+      <AppSidebar />
+      <div className="flex-1 flex flex-col min-w-0">
+        <header className="h-16 px-6 sm:px-8 border-b border-border bg-card flex items-center gap-4">
         <Link
           to="/menu"
           className="size-9 rounded-lg hover:bg-muted flex items-center justify-center"
@@ -197,6 +200,7 @@ function StationsPage() {
 
         {selectedStation && station && <StationDetail station={station} />}
       </main>
+      </div>
     </div>
   );
 }

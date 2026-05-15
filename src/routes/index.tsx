@@ -1,16 +1,11 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth";
+import AppSidebar from "@/components/AppSidebar";
 import {
   Bike,
-  BarChart3,
   MapPinned,
   MessageSquare,
-  Bell,
-  HelpCircle,
-  Settings,
-  LogOut,
-  Map as MapIcon,
   Search,
   Calendar as CalendarIcon,
   Download,
@@ -62,7 +57,7 @@ function Index() {
 
   return (
     <div className="flex min-h-screen bg-background text-foreground">
-      <Sidebar />
+      <AppSidebar />
       <main className="flex-1 flex flex-col min-w-0">
         <TopBar />
         <div className="flex-1 px-8 py-6 space-y-6 overflow-x-hidden">
@@ -72,110 +67,6 @@ function Index() {
         </div>
       </main>
     </div>
-  );
-}
-
-/* ---------------- Sidebar ---------------- */
-function Sidebar() {
-  const { isAdmin, logout } = useAuth();
-  return (
-    <aside className="w-64 shrink-0 bg-card border-r border-border flex flex-col">
-      <div className="px-5 py-5 flex items-center gap-3">
-        <div className="size-11 rounded-xl bg-primary-soft flex items-center justify-center">
-          <Bike className="size-6 text-primary" strokeWidth={2.2} />
-        </div>
-        <div>
-          <div className="font-bold text-base leading-tight">따릉이</div>
-          <div className="text-xs text-muted-foreground">빅데이터 플랫폼</div>
-        </div>
-      </div>
-
-      <nav className="px-3 mt-2 flex-1">
-        <div className="px-2 text-xs text-muted-foreground mb-2">메인 메뉴</div>
-        <ul className="space-y-1">
-          {isAdmin ? (
-            <>
-              <NavItem to="/dashboard" icon={<BarChart3 className="size-4" />} label="대시보드" />
-              <NavItem to="/stations" icon={<Bike className="size-4" />} label="대여소 현황" />
-            </>
-          ) : (
-            <>
-              <NavItem to="/" icon={<MapIcon className="size-4" />} label="내 주변 대여소" active />
-              <NavItem icon={<MapPinned className="size-4" />} label="대여소 지도 전체보기" />
-              <NavItem icon={<MessageSquare className="size-4" />} label="챗봇" />
-              <NavItem icon={<History className="size-4" />} label="이용내역" />
-              <NavItem icon={<Search className="size-4" />} label="대여소 찾기" />
-            </>
-          )}
-          <NavItem icon={<MessageSquare className="size-4" />} label="Q&A 게시판" />
-        </ul>
-      </nav>
-
-      <div className="px-3 pb-3 space-y-1">
-        <NavItem icon={<Bell className="size-4" />} label="알림" />
-        <NavItem icon={<HelpCircle className="size-4" />} label="도움말" />
-        <NavItem icon={<Settings className="size-4" />} label="설정" />
-      </div>
-
-      {isAdmin ? (
-        <div className="mx-3 mb-4 mt-2 p-3 rounded-xl bg-muted/60 flex items-center gap-3">
-          <div className="size-9 rounded-full bg-foreground/85 text-background text-xs font-semibold flex items-center justify-center">
-            관
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="text-sm font-medium leading-tight">관리자</div>
-            <div className="text-xs text-muted-foreground truncate">admin@seoul.go...</div>
-          </div>
-          <button
-            onClick={logout}
-            title="로그아웃"
-            className="text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <LogOut className="size-4" />
-          </button>
-        </div>
-      ) : (
-        <Link
-          to="/login"
-          className="mx-3 mb-4 mt-2 px-3 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-medium text-center hover:opacity-90 transition-opacity"
-        >
-          관리자 로그인
-        </Link>
-      )}
-    </aside>
-  );
-}
-
-function NavItem({
-  icon,
-  label,
-  active,
-  to,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  active?: boolean;
-  to?: string;
-}) {
-  const cls = `w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
-    active
-      ? "bg-primary text-primary-foreground font-medium shadow-sm"
-      : "text-foreground/80 hover:bg-muted"
-  }`;
-  return (
-    <li>
-      {to ? (
-        <Link to={to} className={cls}>
-          {icon}
-          <span>{label}</span>
-        </Link>
-      ) : (
-        <button className={cls}>
-          {icon}
-          <span>{label}</span>
-        </button>
-      )}
-    </li>
   );
 }
 
