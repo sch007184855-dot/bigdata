@@ -215,57 +215,108 @@ function DistrictMap({
   districtStats: Map<string, number>;
   onSelect: (name: string) => void;
 }) {
+  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const dragState = useRef<{ startX: number; startY: number; baseX: number; baseY: number } | null>(null);
+  const [dragging, setDragging] = useState(false);
+
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    (e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId);
+    dragState.current = { startX: e.clientX, startY: e.clientY, baseX: pan.x, baseY: pan.y };
+    setDragging(true);
+  };
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!dragState.current) return;
+    const dx = e.clientX - dragState.current.startX;
+    const dy = e.clientY - dragState.current.startY;
+    setPan({ x: dragState.current.baseX + dx, y: dragState.current.baseY + dy });
+  };
+  const endDrag = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (dragState.current) {
+      (e.currentTarget as HTMLDivElement).releasePointerCapture(e.pointerId);
+      dragState.current = null;
+      setDragging(false);
+    }
+  };
+  const resetPan = () => setPan({ x: 0, y: 0 });
+
   return (
     <section className="flex-1 flex flex-col min-h-0">
-      <div className="mb-5">
-        <h2 className="text-2xl font-bold">서울시 자치구 지도</h2>
-        <p className="text-sm text-muted-foreground mt-1">
-          지역구를 선택하면 해당 구의 대여소 목록을 볼 수 있습니다
-        </p>
+      <div className="mb-5 flex items-end justify-between gap-4">
+        <div>
+          <h2 className="text-2xl font-bold">서울시 자치구 지도</h2>
+          <p className="text-sm text-muted-foreground mt-1">
+            지역구를 선택하면 해당 구의 대여소 목록을 볼 수 있습니다 · 지도를 드래그해 이동할 수 있어요
+          </p>
+        </div>
+        {(pan.x !== 0 || pan.y !== 0) && (
+          <button
+            onClick={resetPan}
+            className="h-9 px-3 rounded-lg border border-border text-sm hover:bg-muted"
+          >
+            위치 초기화
+          </button>
+        )}
       </div>
 
       <div className="bg-card border border-border rounded-2xl p-6 flex-1 flex flex-col min-h-0">
-        <div className="relative flex-1 min-h-[500px] w-full rounded-xl bg-[oklch(0.97_0.01_220)] border border-border overflow-hidden">
-          {/* 한강 (row 4.5 부근) */}
+        <div
+          className={`relative flex-1 min-h-[500px] w-full rounded-xl bg-[oklch(0.97_0.01_220)] border border-border overflow-hidden touch-none select-none ${
+            dragging ? "cursor-grabbing" : "cursor-grab"
+          }`}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={endDrag}
+          onPointerCancel={endDrag}
+        >
           <div
-            className="absolute inset-x-0 bg-[oklch(0.82_0.06_220)]/70"
+            className="absolute inset-0"
             style={{
-              top: `${(4.4 / 6) * 100}%`,
-              height: `${(0.4 / 6) * 100}%`,
+              transform: `translate3d(${pan.x}px, ${pan.y}px, 0)`,
+              transition: dragging ? "none" : "transform 0.2s ease-out",
             }}
-          />
-          <div
-            className="absolute text-[10px] font-medium text-[oklch(0.45_0.1_220)]"
-            style={{ left: "2%", top: `${(4.45 / 6) * 100}%` }}
           >
-            한강
-          </div>
+            {/* 한강 (row 4.5 부근) */}
+            <div
+              className="absolute inset-x-0 bg-[oklch(0.82_0.06_220)]/70"
+              style={{
+                top: `${(4.4 / 6) * 100}%`,
+                height: `${(0.4 / 6) * 100}%`,
+              }}
+            />
+            <div
+              className="absolute text-[10px] font-medium text-[oklch(0.45_0.1_220)]"
+              style={{ left: "2%", top: `${(4.45 / 6) * 100}%` }}
+            >
+              한강
+            </div>
 
-          {/* 8x6 그리드 위에 자치구 배치 */}
-          {districts.map((d) => {
-            const count = districtStats.get(d.name) ?? 0;
-            return (
-              <button
-                key={d.code}
-                onClick={() => onSelect(d.name)}
-                className="absolute group flex flex-col items-center justify-center rounded-lg border border-border bg-card hover:bg-primary-soft hover:border-primary/50 hover:z-10 hover:scale-[1.08] transition-all shadow-sm"
-                style={{
-                  left: `${((d.col - 0.5) / 8) * 100}%`,
-                  top: `${((d.row - 0.5) / 6) * 100}%`,
-                  width: `${(1 / 8) * 100}%`,
-                  height: `${(1 / 6) * 100}%`,
-                  padding: 4,
-                }}
-              >
-                <span className="text-sm font-semibold leading-none group-hover:text-primary">
-                  {d.name}
-                </span>
-                <span className="text-xs text-muted-foreground mt-1 group-hover:text-primary/80">
-                  {count}개소
-                </span>
-              </button>
-            );
-          })}
+            {/* 8x6 그리드 위에 자치구 배치 */}
+            {districts.map((d) => {
+              const count = districtStats.get(d.name) ?? 0;
+              return (
+                <button
+                  key={d.code}
+                  onClick={() => onSelect(d.name)}
+                  onPointerDown={(e) => e.stopPropagation()}
+                  className="absolute group flex flex-col items-center justify-center rounded-lg border border-border bg-card hover:bg-primary-soft hover:border-primary/50 hover:z-10 hover:scale-[1.08] transition-all shadow-sm"
+                  style={{
+                    left: `${((d.col - 0.5) / 8) * 100}%`,
+                    top: `${((d.row - 0.5) / 6) * 100}%`,
+                    width: `${(1 / 8) * 100}%`,
+                    height: `${(1 / 6) * 100}%`,
+                    padding: 4,
+                  }}
+                >
+                  <span className="text-sm font-semibold leading-none group-hover:text-primary">
+                    {d.name}
+                  </span>
+                  <span className="text-xs text-muted-foreground mt-1 group-hover:text-primary/80">
+                    {count}개소
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         <div className="mt-4 flex items-center gap-5 text-xs text-muted-foreground">
