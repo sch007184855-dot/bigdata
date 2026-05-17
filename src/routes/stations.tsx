@@ -179,7 +179,7 @@ function StationsPage() {
         )}
       </header>
 
-      <main className="px-6 sm:px-8 py-6 max-w-6xl mx-auto">
+      <main className="flex-1 px-6 sm:px-8 py-6 w-full flex flex-col min-h-0">
         {!selectedDistrict && (
           <DistrictMap
             districts={districts}
