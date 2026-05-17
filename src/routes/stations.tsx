@@ -230,18 +230,18 @@ function DistrictMap({
           <div
             className="absolute inset-x-0 bg-[oklch(0.82_0.06_220)]/70"
             style={{
-              top: `${(4.4 / 7) * 100}%`,
-              height: `${(0.5 / 7) * 100}%`,
+              top: `${(4.4 / 6) * 100}%`,
+              height: `${(0.4 / 6) * 100}%`,
             }}
           />
           <div
             className="absolute text-[10px] font-medium text-[oklch(0.45_0.1_220)]"
-            style={{ left: "2%", top: `${(4.5 / 7) * 100}%` }}
+            style={{ left: "2%", top: `${(4.45 / 6) * 100}%` }}
           >
             한강
           </div>
 
-          {/* 8x7 그리드 위에 자치구 배치 */}
+          {/* 8x6 그리드 위에 자치구 배치 */}
           {districts.map((d) => {
             const count = districtStats.get(d.name) ?? 0;
             return (
@@ -251,9 +251,9 @@ function DistrictMap({
                 className="absolute group flex flex-col items-center justify-center rounded-lg border border-border bg-card hover:bg-primary-soft hover:border-primary/50 hover:z-10 hover:scale-[1.08] transition-all shadow-sm"
                 style={{
                   left: `${((d.col - 0.5) / 8) * 100}%`,
-                  top: `${((d.row - 0.5) / 7) * 100}%`,
+                  top: `${((d.row - 0.5) / 6) * 100}%`,
                   width: `${(1 / 8) * 100}%`,
-                  height: `${(1 / 7) * 100}%`,
+                  height: `${(1 / 6) * 100}%`,
                   padding: 4,
                 }}
               >
