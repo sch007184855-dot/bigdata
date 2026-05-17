@@ -216,7 +216,7 @@ function DistrictMap({
   onSelect: (name: string) => void;
 }) {
   return (
-    <section>
+    <section className="flex-1 flex flex-col min-h-0">
       <div className="mb-5">
         <h2 className="text-2xl font-bold">서울시 자치구 지도</h2>
         <p className="text-sm text-muted-foreground mt-1">
@@ -224,8 +224,8 @@ function DistrictMap({
         </p>
       </div>
 
-      <div className="bg-card border border-border rounded-2xl p-6">
-        <div className="relative aspect-[8/7] w-full rounded-xl bg-[oklch(0.97_0.01_220)] border border-border overflow-hidden">
+      <div className="bg-card border border-border rounded-2xl p-6 flex-1 flex flex-col min-h-0">
+        <div className="relative flex-1 min-h-[500px] w-full rounded-xl bg-[oklch(0.97_0.01_220)] border border-border overflow-hidden">
           {/* 한강 (row 4.5 부근) */}
           <div
             className="absolute inset-x-0 bg-[oklch(0.82_0.06_220)]/70"
@@ -257,10 +257,10 @@ function DistrictMap({
                   padding: 4,
                 }}
               >
-                <span className="text-[11px] sm:text-xs font-semibold leading-none group-hover:text-primary">
+                <span className="text-sm font-semibold leading-none group-hover:text-primary">
                   {d.name}
                 </span>
-                <span className="text-[10px] text-muted-foreground mt-1 group-hover:text-primary/80">
+                <span className="text-xs text-muted-foreground mt-1 group-hover:text-primary/80">
                   {count}개소
                 </span>
               </button>
