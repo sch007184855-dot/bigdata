@@ -220,7 +220,7 @@ function MapPanel() {
         </div>
       </div>
 
-      <div className="relative mx-6 mb-6 h-[420px] rounded-xl bg-[oklch(0.97_0.005_250)] overflow-hidden border border-border">
+      <div className="relative mx-6 mb-6 h-[560px] rounded-xl bg-[oklch(0.97_0.005_250)] overflow-hidden border border-border">
         {/* Grid */}
         <div
           className="absolute inset-0 opacity-60"
