@@ -23,6 +23,12 @@ import {
   History,
   ChevronLeft,
   ChevronRight,
+  Sun,
+  Cloud,
+  CloudRain,
+  CloudSun,
+  Droplets,
+  Wind,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -220,7 +226,7 @@ function MapPanel() {
         </div>
       </div>
 
-      <div className="relative mx-6 mb-6 h-[420px] rounded-xl bg-[oklch(0.97_0.005_250)] overflow-hidden border border-border">
+      <div className="relative mx-6 mb-6 h-[560px] rounded-xl bg-[oklch(0.97_0.005_250)] overflow-hidden border border-border">
         {/* Grid */}
         <div
           className="absolute inset-0 opacity-60"
@@ -434,7 +440,7 @@ function EventCalendar({
                   key={idx}
                   disabled={day === null}
                   onClick={() => day !== null && onSelect(day)}
-                  className={`relative aspect-square rounded-lg text-sm transition-colors ${
+                  className={`relative h-10 rounded-lg text-sm transition-colors ${
                     day === null
                       ? ""
                       : isSelected
@@ -462,16 +468,96 @@ function EventCalendar({
           </div>
         </div>
 
-        <div className="lg:border-l lg:border-border lg:pl-8">
-          <h4 className="font-semibold mb-3">
-            {selectedDay ? `5월 ${selectedDay}일 행사` : "날짜를 선택하세요"}
-          </h4>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            {selectedDay
-              ? "이 날짜에 예정된 도시 행사가 곧 업데이트됩니다."
-              : "캘린더에서 날짜를 클릭하면 해당 날짜의 행사를 확인할 수 있습니다."}
-          </p>
+        <div className="lg:border-l lg:border-border lg:pl-8 space-y-4">
+          <div>
+            <h4 className="font-semibold mb-3">
+              {selectedDay ? `5월 ${selectedDay}일` : "날짜를 선택하세요"}
+            </h4>
+            {selectedDay ? (
+              <WeatherCard day={selectedDay} />
+            ) : (
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                캘린더에서 날짜를 클릭하면 해당 날짜의 날씨와 행사를 확인할 수 있습니다.
+              </p>
+            )}
+          </div>
+          {selectedDay && (
+            <div className="pt-4 border-t border-border">
+              <h5 className="text-sm font-semibold mb-2">행사 정보</h5>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {eventDays.includes(selectedDay)
+                  ? "이 날짜에 예정된 도시 행사가 곧 업데이트됩니다."
+                  : "예정된 행사가 없습니다."}
+              </p>
+            </div>
+          )}
         </div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------- Weather ---------------- */
+const weatherByDay: Record<
+  number,
+  { label: string; temp: number; low: number; high: number; humidity: number; wind: number; icon: "sun" | "cloud" | "rain" | "partly" }
+> = {};
+const labels: Array<{ label: string; icon: "sun" | "cloud" | "rain" | "partly" }> = [
+  { label: "맑음", icon: "sun" },
+  { label: "구름 조금", icon: "partly" },
+  { label: "흐림", icon: "cloud" },
+  { label: "비", icon: "rain" },
+];
+for (let d = 1; d <= 31; d++) {
+  const pick = labels[(d * 7) % labels.length];
+  const temp = 16 + ((d * 3) % 12);
+  weatherByDay[d] = {
+    label: pick.label,
+    icon: pick.icon,
+    temp,
+    low: temp - 4,
+    high: temp + 4,
+    humidity: 40 + ((d * 5) % 40),
+    wind: 1 + ((d * 2) % 6),
+  };
+}
+
+function WeatherCard({ day }: { day: number }) {
+  const w = weatherByDay[day];
+  const Icon =
+    w.icon === "sun" ? Sun : w.icon === "rain" ? CloudRain : w.icon === "partly" ? CloudSun : Cloud;
+  const iconColor =
+    w.icon === "sun"
+      ? "text-[oklch(0.75_0.15_70)]"
+      : w.icon === "rain"
+        ? "text-[oklch(0.6_0.15_240)]"
+        : w.icon === "partly"
+          ? "text-[oklch(0.7_0.12_220)]"
+          : "text-muted-foreground";
+  return (
+    <div className="rounded-xl border border-border bg-muted/30 p-4">
+      <div className="flex items-center gap-3">
+        <div className="size-12 rounded-xl bg-card border border-border flex items-center justify-center">
+          <Icon className={`size-7 ${iconColor}`} />
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="text-2xl font-bold leading-none">{w.temp}°</div>
+          <div className="text-xs text-muted-foreground mt-1">{w.label}</div>
+        </div>
+        <div className="text-right text-xs text-muted-foreground">
+          <div>최고 {w.high}°</div>
+          <div>최저 {w.low}°</div>
+        </div>
+      </div>
+      <div className="mt-3 pt-3 border-t border-border flex items-center justify-between text-xs text-muted-foreground">
+        <span className="flex items-center gap-1.5">
+          <Droplets className="size-3.5" />
+          습도 {w.humidity}%
+        </span>
+        <span className="flex items-center gap-1.5">
+          <Wind className="size-3.5" />
+          {w.wind}m/s
+        </span>
       </div>
     </div>
   );
