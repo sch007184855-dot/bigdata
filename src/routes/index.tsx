@@ -470,27 +470,21 @@ function EventCalendar({
 
         <div className="lg:border-l lg:border-border lg:pl-8 space-y-4">
           <div>
-            <h4 className="font-semibold mb-3">
-              {selectedDay ? `5월 ${selectedDay}일` : "날짜를 선택하세요"}
-            </h4>
-            {selectedDay ? (
-              <WeatherCard day={selectedDay} />
-            ) : (
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                캘린더에서 날짜를 클릭하면 해당 날짜의 날씨와 행사를 확인할 수 있습니다.
-              </p>
-            )}
+            <h4 className="font-semibold mb-3">오늘의 날씨</h4>
+            <WeatherCard />
           </div>
-          {selectedDay && (
-            <div className="pt-4 border-t border-border">
-              <h5 className="text-sm font-semibold mb-2">행사 정보</h5>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {eventDays.includes(selectedDay)
+          <div className="pt-4 border-t border-border">
+            <h5 className="text-sm font-semibold mb-2">
+              {selectedDay ? `5월 ${selectedDay}일 행사` : "행사 정보"}
+            </h5>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {selectedDay
+                ? eventDays.includes(selectedDay)
                   ? "이 날짜에 예정된 도시 행사가 곧 업데이트됩니다."
-                  : "예정된 행사가 없습니다."}
-              </p>
-            </div>
-          )}
+                  : "예정된 행사가 없습니다."
+                : "캘린더에서 날짜를 클릭하면 해당 날짜의 행사를 확인할 수 있습니다."}
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -522,8 +516,18 @@ for (let d = 1; d <= 31; d++) {
   };
 }
 
-function WeatherCard({ day }: { day: number }) {
-  const w = weatherByDay[day];
+const todayWeather = {
+  label: "맑음",
+  temp: 22,
+  low: 16,
+  high: 26,
+  humidity: 55,
+  wind: 3,
+  icon: "sun" as const,
+};
+
+function WeatherCard() {
+  const w = todayWeather;
   const Icon =
     w.icon === "sun" ? Sun : w.icon === "rain" ? CloudRain : w.icon === "partly" ? CloudSun : Cloud;
   const iconColor =
