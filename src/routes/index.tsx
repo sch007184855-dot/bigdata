@@ -516,8 +516,18 @@ for (let d = 1; d <= 31; d++) {
   };
 }
 
-function WeatherCard({ day }: { day: number }) {
-  const w = weatherByDay[day];
+const todayWeather = {
+  label: "맑음",
+  temp: 22,
+  low: 16,
+  high: 26,
+  humidity: 55,
+  wind: 3,
+  icon: "sun" as const,
+};
+
+function WeatherCard() {
+  const w = todayWeather;
   const Icon =
     w.icon === "sun" ? Sun : w.icon === "rain" ? CloudRain : w.icon === "partly" ? CloudSun : Cloud;
   const iconColor =
