@@ -434,7 +434,7 @@ function EventCalendar({
                   key={idx}
                   disabled={day === null}
                   onClick={() => day !== null && onSelect(day)}
-                  className={`relative aspect-square rounded-lg text-sm transition-colors ${
+                  className={`relative h-10 rounded-lg text-sm transition-colors ${
                     day === null
                       ? ""
                       : isSelected
