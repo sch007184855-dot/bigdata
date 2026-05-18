@@ -23,6 +23,12 @@ import {
   History,
   ChevronLeft,
   ChevronRight,
+  Sun,
+  Cloud,
+  CloudRain,
+  CloudSun,
+  Droplets,
+  Wind,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
