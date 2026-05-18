@@ -562,7 +562,3 @@ function WeatherCard({ day }: { day: number }) {
     </div>
   );
 }
-      </div>
-    </div>
-  );
-}
